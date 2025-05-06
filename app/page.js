@@ -16,6 +16,8 @@ async function handle() {
     body: JSON.stringify({ startup: name }),
   });
   const result = await res.json();
+  console.log(result);
+  
   let temp = result.text.split("||");
   temp.shift();
   temp.pop();
