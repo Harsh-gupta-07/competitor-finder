@@ -17,7 +17,6 @@ export default function Home() {
     setAns(temp);
     setName("");
     setLoad(false);
-    // console.log(temp);
   }
 
   return (
