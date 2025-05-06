@@ -5,26 +5,25 @@ export default function Home() {
   const [ans, setAns] = useState([]);
   const [name, setName] = useState("");
   const [load, setLoad] = useState(false);
+  async function handle() {
+    if (!name.trim()) return;
 
-async function handle() {
-  if (!name.trim()) return;
+    setLoad(true);
+    const res = await fetch("/api/gemini", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ startup: name }),
+    });
+    const result = await res.json();
+    console.log(result);
 
-  setLoad(true);
-  const res = await fetch("/api/gemini", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ startup: name }),
-  });
-  const result = await res.json();
-  console.log(result);
-  
-  let temp = result.text.split("||");
-  temp.shift();
-  temp.pop();
-  setAns(temp);
-  setName("");
-  setLoad(false);
-}
+    let temp = result.text.split("||");
+    temp.shift();
+    temp.pop();
+    setAns(temp);
+    setName("");
+    setLoad(false);
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
