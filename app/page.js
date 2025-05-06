@@ -49,7 +49,7 @@ export default function Home() {
         )}
       </div>
 
-      {!load && ans.length > 0 ? (
+      {!load && ans.length > 0 &&(
         <div className="w-full max-w-7xl flex flex-wrap gap-4 justify-center">
           {ans.map((val, ind) => (
             val!==""?<div
@@ -60,7 +60,7 @@ export default function Home() {
             </div>:""
           ))}
         </div>
-      ):<h1 className="text-2xl font-bold text-center mb-4 text-gray-800">The Search came out Empty</h1>}
+      )}
     </div>
   );
 }
