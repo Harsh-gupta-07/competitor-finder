@@ -1,23 +1,28 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
-import { main } from "./gemini";
 
 export default function Home() {
   const [ans, setAns] = useState([]);
   const [name, setName] = useState("");
   const [load, setLoad] = useState(false);
 
-  async function handle() {
-    setLoad(true);
-    const result = await main(name);
-    let temp = result.split("||");
-    temp.shift();
-    temp.pop();
-    setAns(temp);
-    setName("");
-    setLoad(false);
-  }
+async function handle() {
+  if (!name.trim()) return;
+
+  setLoad(true);
+  const res = await fetch("/api/gemini", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ startup: name }),
+  });
+  const result = await res.json();
+  let temp = result.text.split("||");
+  temp.shift();
+  temp.pop();
+  setAns(temp);
+  setName("");
+  setLoad(false);
+}
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
@@ -48,16 +53,20 @@ export default function Home() {
         )}
       </div>
 
-      {!load && ans.length > 0 &&(
+      {!load && ans.length > 0 && (
         <div className="w-full max-w-7xl flex flex-wrap gap-4 justify-center">
-          {ans.map((val, ind) => (
-            val!==""?<div
-              key={ind}
-              className="bg-white p-4 rounded-lg shadow-md w-full sm:w-[48%] lg:w-[30%] max-h-60 overflow-y-auto whitespace-pre-wrap break-words text-gray-800 text-sm"
-            >
-              {val.trim()}
-            </div>:""
-          ))}
+          {ans.map((val, ind) =>
+            val !== "" ? (
+              <div
+                key={ind}
+                className="bg-white p-4 rounded-lg shadow-md w-full sm:w-[48%] lg:w-[30%] max-h-60 overflow-y-auto whitespace-pre-wrap break-words text-gray-800 text-sm"
+              >
+                {val.trim()}
+              </div>
+            ) : (
+              ""
+            )
+          )}
         </div>
       )}
     </div>
