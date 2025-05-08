@@ -10,7 +10,7 @@ export async function POST(req) {
 
   try {
     const result = await model.generateContent([
-      `list startups like ${startup}, listing their features such as focus area, key features, strength, valuation. give the response in this format || name : all info in one paragraph || make sure to only respond with name and info. make sure to least a couple`,
+      `list startups like ${startup}, listing their features such as focus area, key features, strength, valuation. give the response in this format || name : all info in one paragraph || make sure to only respond with name and info. make sure to least 3-4`,
     ]);
 
     const cleanText = result.response.text().replaceAll("*", "").replaceAll("\n", "");
