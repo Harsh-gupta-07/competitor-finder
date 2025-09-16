@@ -9,20 +9,24 @@ export default function Home() {
     if (!name.trim()) return;
 
     setLoad(true);
-    const res = await fetch("/api/gemini", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ startup: name }),
-    });
-    const result = await res.json();
-    console.log(result);
+    try {
+      const res = await fetch("/api/gemini", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ startup: name }),
+      });
+      const result = await res.json();
 
-    let temp = result.text.split("||");
-    temp.shift();
-    temp.pop();
-    setAns(temp);
-    setName("");
-    setLoad(false);
+      let temp = result.text.split("||");
+      temp.shift();
+      temp.pop();
+      setAns(temp);
+      setName("");
+      setLoad(false);
+    } catch (err) {
+      setAns(["Some Error occured"])
+      setLoad(false)
+    }
   }
 
   return (
